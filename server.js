@@ -1,5 +1,7 @@
+'use strict'
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 const express = require('express')
-const app = express()
 const session = require('express-session')
 const path = require('path')
 const cookieParser = require('cookie-parser')
@@ -10,7 +12,14 @@ const mongoose = require('mongoose')
 mongoose.connect(config.dbURL)
 const passport = require('passport')
 const FacebookStrategy = require('passport-facebook').Strategy
-require('https').globalAgent.options.ca = require('ssl-root-cas').create();
+const https = require('https')
+const fs = require('fs')
+const app = express()
+const options = {
+  cert: fs.readFileSync(__dirname + '/certificates/cert.pem'),
+  key: fs.readFileSync(__dirname + '/certificates/key.pem')
+}
+
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -44,7 +53,9 @@ require('./auth/passportAuth')(passport,FacebookStrategy,config,mongoose)
 
 require('./routes/index')(express,app,passport)
 
-app.listen(1759,function(){
-    console.log("MY_CHAT working on PORT 1759")
+const server = https.createServer(options, app);
+
+server.listen(1759,function(){
+    console.log("MY_CHAT working on https://localhost:1759")
     console.log("Mode: " + env1)
-});
+})

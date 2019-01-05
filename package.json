@@ -17,10 +17,14 @@
     "hogan-express": "^0.5.2",
     "mongoose": "^5.4.1",
     "mysql2": "^1.6.4",
+    "ngrok": "^3.1.0",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "sequelize": "^4.42.0",
     "socket.io": "^2.2.0",
     "ssl-root-cas": "^1.2.5"
+  },
+  "devDependencies": {
+    "http-server": "^0.11.1"
   }
 }

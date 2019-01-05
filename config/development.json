@@ -4,6 +4,6 @@
     "fb": {
         "appID":"231253834426197",
         "appSecret": "db2dc4de2939f2d555991f573fe1760b",
-        "callbackURL": "http://localhost:1759/auth/facebook/callback"
+        "callbackURL": "https://localhost:1759/auth/facebook/callback"
     }
 }
