@@ -52,13 +52,13 @@ app.use(passport.session())
 
 require('./auth/passportAuth')(passport,FacebookStrategy,config,mongoose)
 
-require('./routes/index')(express,app,passport,config)
+require('./routes/index')(express,app,passport,config,rooms)
 
 app.set('port',process.env.PORT || 1759)
 const server = https.createServer(options, app);
-const io = socketio(server)
+const io = socketio.listen(server)
 
-require('./socket/socket')(io,rooms)
+require('./socket/socket.js')(io,rooms)
 
 server.listen(app.get('port'),function(){
     console.log("MY_CHAT working on https://localhost:" + app.get('port'))

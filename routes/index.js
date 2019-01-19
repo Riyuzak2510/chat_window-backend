@@ -1,4 +1,4 @@
-module.exports = function(express,app,passport,config) {
+module.exports = function(express,app,passport,config,rooms) {
     const route = express.Router()
 
     route.get('/',function(req,res,next) {
@@ -19,10 +19,29 @@ module.exports = function(express,app,passport,config) {
         failureRedirect: '/'
     }))
 
-    route.get('/chatrooms',(req,res,next) => {
+    route.get('/chatrooms',securePages,(req,res,next) => {
         res.render('chatrooms',{title: 'Chatrooms',user:req.user,config:config})
     })
 
+    route.get('/room/:id',securePages,function(req,res,next){
+        var room_name = findtitle(req.params.id)
+        res.render('room',{user:req.user, room_number:req.params.id,room_name:room_name,config:config})
+    })
+    function findtitle(room_id)
+    {
+        var n = 0
+        while(n < rooms.length)
+        {
+            if(rooms[n].room_number == room_id)
+            {
+                return rooms[n].room_name
+            }
+            else
+            {
+                n++;
+            }
+        }
+    }
     route.get('/setcolor',(req,res,next) => {
         req.session.favColor = 'Red'
         res.send("Setting Favourite Color!")
