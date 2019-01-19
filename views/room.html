@@ -17,6 +17,7 @@
 			messages.on('connect',function(){
 				console.log("Connection Done!!")
 				messages.emit('joinroom',{room:roomNum,username:username,userPic:userPic})
+				//messages.emit('updateList',{room:roomNum})
 			})
 
 			$(document).on('keyup','.newmessage',function(e){
@@ -52,7 +53,8 @@
 				var userlist = JSON.parse(data)
 				$('.users').html('');
 				for(var n = 0; n < userlist.length; n++){
-					var str = '<li><h5>'  +  userlist[n].username + '</h5></li>';
+					console.log(userlist[n].user)
+					var str = '<li><h5>'  +  userlist[n].user + '</h5></li>';
 					$(str).prependTo($('.users'));
 				}
 			})
