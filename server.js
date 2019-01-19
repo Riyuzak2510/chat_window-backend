@@ -14,12 +14,13 @@ const passport = require('passport')
 const FacebookStrategy = require('passport-facebook').Strategy
 const https = require('https')
 const fs = require('fs')
+const socketio = require('socket.io')
 const app = express()
 const options = {
   cert: fs.readFileSync(__dirname + '/certificates/cert.pem'),
   key: fs.readFileSync(__dirname + '/certificates/key.pem')
 }
-
+var rooms = []
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
@@ -51,11 +52,15 @@ app.use(passport.session())
 
 require('./auth/passportAuth')(passport,FacebookStrategy,config,mongoose)
 
-require('./routes/index')(express,app,passport)
+require('./routes/index')(express,app,passport,config)
 
+app.set('port',process.env.PORT || 1759)
 const server = https.createServer(options, app);
+const io = socketio(server)
 
-server.listen(1759,function(){
-    console.log("MY_CHAT working on https://localhost:1759")
+require('./socket/socket')(io,rooms)
+
+server.listen(app.get('port'),function(){
+    console.log("MY_CHAT working on https://localhost:" + app.get('port'))
     console.log("Mode: " + env1)
 })

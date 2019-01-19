@@ -5,6 +5,25 @@
 	<title>{{title}}</title>
 	<link rel="stylesheet" href="../css/chatroom.css">
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		$(function(){
+			var host = '{{config.host}}'
+			var socket = io.connect(host + '/roomlist')
+			socket.on('connect', function(){
+				console.log('Connection Done!')
+			})
+			$(document).on('click','#create',function(){
+				var room_name = $('.newRoom').val()
+				if(room_name != '')
+				{
+					var room_number = parseInt(Math.random()* 10000)
+					socket.emit('newRoom',{room_name:room_name,room_number:room_number})
+					$('.newRoom').val('')
+				}
+			})
+		})
+	</script>
 </head>
 <body>
 	<div class="cr-container">

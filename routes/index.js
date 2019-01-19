@@ -1,4 +1,4 @@
-module.exports = function(express,app,passport) {
+module.exports = function(express,app,passport,config) {
     const route = express.Router()
 
     route.get('/',function(req,res,next) {
@@ -20,7 +20,7 @@ module.exports = function(express,app,passport) {
     }))
 
     route.get('/chatrooms',(req,res,next) => {
-        res.render('chatrooms',{title: 'Chatrooms',user:req.user})
+        res.render('chatrooms',{title: 'Chatrooms',user:req.user,config:config})
     })
 
     route.get('/setcolor',(req,res,next) => {
