@@ -24,12 +24,7 @@ module.exports = function(io,rooms){
         })
 
         function updateUserList(room,updateALL){
-            var getusers
-            io.of('/messages').in(room).clients((error, clients) => {
-                if (error) throw error;
-                getusers = clients
-           });
-           
+            var getusers = io.of('/messages').clients(room);
             var userlist = []
             for(var i in getusers)
             {
