@@ -8,6 +8,7 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
 		$(function(){
+			console.log("hello1")
 			var host = '{{config.host}}';
 			var messages = io.connect(host + '/messages')
 			var username = '{{user.Fullname}}'

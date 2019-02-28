@@ -8,6 +8,7 @@ module.exports = function(io,rooms){
             rooms.push(data)
             socket.broadcast.emit('roomupdate',JSON.stringify(rooms))
             socket.emit('roomupdate',JSON.stringify(rooms))
+            console.log("Hello")
         })
     })
     var messages = io.of('/messages').on('connection',function(socket){
