@@ -20,8 +20,6 @@ const options = {
   cert: fs.readFileSync(__dirname + '/certificates/cert.pem'),
   key: fs.readFileSync(__dirname + '/certificates/key.pem')
 }
-var rooms = []
-
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.set('views',path.join(__dirname,'views'))
@@ -47,6 +45,8 @@ else {
     }))
 }
 
+var rooms = []
+
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -58,7 +58,7 @@ app.set('port',process.env.PORT || 1759)
 const server = https.createServer(options, app);
 const io = socketio.listen(server)
 
-require('./socket/socket.js')(io,rooms)
+require('./socket/socket.js')(io,rooms,mongoose)
 
 server.listen(app.get('port'),function(){
     console.log("MY_CHAT working on https://localhost:" + app.get('port'))

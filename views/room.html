@@ -11,24 +11,41 @@
 			console.log("hello1")
 			var host = '{{config.host}}';
 			var messages = io.connect(host + '/messages')
+			var ProfileID = '{{user.ProfileID}}'
 			var username = '{{user.Fullname}}'
 			var userPic = '{{user.Profilepic}}'
 			var roomNum = '{{room_number}}'
 
 			messages.on('connect',function(){
 				console.log("Connection Done!!")
-				messages.emit('joinroom',{room:roomNum,username:username,userPic:userPic})
+				messages.emit('joinroom',{room:roomNum,username:username,userPic:userPic,ProfileID: ProfileID})
 				//messages.emit('updateList',{room:roomNum})
 			})
-
+			messages.on('printmessages',function(data){
+				//load messages here
+				var Procdata = JSON.parse(data) 
+				for(var i = 0; i < Procdata.length; i++)
+				{
+					var str = '<li>';
+						str += '<div class="msgbox">';
+						str +=	'<div class="pic">' + data.ProfileID1 + '</div>';
+						str +=	'<div class="msg"><p>' + data.Message + '</p></div>';
+						str +=	'</div>';
+						str += '</li>';
+					$(str).hide().prependTo($('.messages')).slideDown(100);
+				}
+			})
 			$(document).on('keyup','.newmessage',function(e){
 				if(e.which == 13 && $(this).val()!= '')
 					{
+						var today = new Date()
 						messages.emit('newmessage',{
-						room_number:roomNum,
+						ProfileID1:ProfileID,
+						ProfileID2:roomNum,
 						username:username,
 						userPic:userPic,
-						message:$(this).val()
+						message:$(this).val(),
+						messagetime: today
 					})
 					updateMessageFeed(username, $(this).val());
 					$(this).val('');

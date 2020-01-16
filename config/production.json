@@ -1,5 +1,5 @@
 {
-    "dbURL" : "mongodb://myuser:cricket2510@ds247944.mlab.com:47944/my_chat",
+    "dbURL" : "mongodb://cricket2510:cricket2510@ds141294.mlab.com:41294/whatsapp",
     "sessionSecret": "ABCD",
     "fb": {
         "appId":"231253834426197",

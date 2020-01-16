@@ -8,18 +8,23 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
 		$(function(){
+			var num = '{{title}}'
 			var host = '{{config.host}}'
+			var userid = '{{user.ProfileID}}'
 			var socket = io.connect(host + '/roomlist')
 			socket.on('connect', function(){
 				console.log('Connection Done!')
-				socket.emit('getrooms')
+				socket.emit('getrooms',{id: userid})
 			})
 			socket.on('printrooms',function(data){
 				$('.roomlist').html('')
 				var Procdata = JSON.parse(data)
+				Procdata.sort(function(a,b) {
+					return a.LastMessagetime.getTime() > b.LastMessagetime.getTime()
+				})
 				for(var i = 0; i < Procdata.length; i++)
 				{
-					var str = '<a href="room/' + Procdata[i].room_number + '"><li>' + Procdata[i].room_name + '</li></a>'
+					var str = '<a href="room/' + Procdata[i].FriendID + '"><li>' + Procdata[i].FriendID + '</li></a>'
 					$('.roomlist').prepend(str)
 				}
 			})
@@ -28,16 +33,16 @@
 				var Procdata = JSON.parse(data)
 				for(var i = 0; i < Procdata.length; i++)
 				{
-					var str = '<a href="room/' + Procdata[i].room_number + '"><li>' + Procdata[i].room_name + '</li></a>'
+					var str = '<a href="room/' + Procdata[i].FriendID + '"><li>' + Procdata[i].FriendID + '</li></a>'
 					$('.roomlist').prepend(str)
 				}
 			})
 			$(document).on('click','#create',function(){
-				var room_name = $('.newRoom').val()
-				if(room_name != '')
+				var room_number = $('.newRoom').val()
+				if(room_number != '')
 				{
-					var room_number = parseInt(Math.random()* 10000)
-					socket.emit('newRoom',{room_name:room_name,room_number:room_number})
+					var today = new Date()
+					socket.emit('newRoom',{FriendID:room_number,ProfileID:userid,Seenstatus: true,LastMessagetime: today})
 					$('.newRoom').val('')
 				}
 			})

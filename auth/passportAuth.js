@@ -1,14 +1,6 @@
 module.exports = function(passport,FacebookStrategy,config,mongoose){
 
-    const ChatUser = new mongoose.Schema({
-        ProfileID: String,
-        Fullname: String,
-        Profilepic: String,
-        Email: String
-    })
-
-    const userModel = mongoose.model('ChatUser',ChatUser)
-
+    var userModel = require('../models/UserModel')
     passport.serializeUser(function(user,done){
         done(null,user.id)
     })
